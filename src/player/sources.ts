@@ -29,25 +29,26 @@ export async function resolveEpisode(id: number, s: number, e: number): Promise<
   return (await loadRegistry()).series?.[id]?.seasons?.[s]?.[e] ?? null;
 }
 
-export async function hasSource(type: MediaType, id: number) {
-  const r = await loadRegistry();
-  return type === "movie" ? !!r.movies?.[id] : !!r.series?.[id];
+/** Com o sistema de embed, todos os títulos possuem player disponível. */
+export async function hasSource(_type: MediaType, _id: number) {
+  return true;
 }
 
 export const useRegistry = () =>
   useQuery({ queryKey: ["sources"], queryFn: loadRegistry, staleTime: Infinity });
 
-export function useHasSource(type: MediaType, id: number) {
-  const { data } = useRegistry();
-  if (!data) return undefined;
-  return type === "movie" ? !!data.movies?.[id] : !!data.series?.[id];
+/** Todos os títulos do catálogo estão disponíveis para assistir via embed. */
+export function useHasSource(_type: MediaType, _id: number) {
+  return true;
 }
 
-/** Episódios com fonte de uma série: Set de "s1e2". */
-export function useEpisodeSources(id: number) {
-  const { data } = useRegistry();
-  const seasons = data?.series?.[id]?.seasons;
-  const set = new Set<string>();
-  if (seasons) for (const [s, eps] of Object.entries(seasons)) for (const e of Object.keys(eps)) set.add(`s${s}e${e}`);
-  return set;
+class UniversalSet<T> extends Set<T> {
+  override has(_value: T): boolean {
+    return true;
+  }
+}
+
+/** Todos os episódios estão disponíveis para assistir via embed. */
+export function useEpisodeSources(_id: number) {
+  return new UniversalSet<string>();
 }
