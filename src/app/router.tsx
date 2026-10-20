@@ -10,6 +10,7 @@ const Categories = lazy(() => import("../pages/Categories"));
 const Genre = lazy(() => import("../pages/Genre"));
 const Search = lazy(() => import("../pages/Search"));
 const MyList = lazy(() => import("../pages/MyList"));
+const About = lazy(() => import("../pages/About"));
 const DetailsPage = lazy(() => import("../pages/Details"));
 const DetailsModal = lazy(() => import("../pages/Details").then(m => ({ default: m.DetailsModal })));
 
@@ -33,6 +34,7 @@ function MainRoutes() {
         <Route path="/categorias/:tipo/:genero" element={<Genre />} />
         <Route path="/busca" element={<Search />} />
         <Route path="/minha-lista" element={<MyList />} />
+        <Route path="/sobre" element={<About />} />
         <Route path="/titulo/:tipo/:id" element={<DetailsPage />} />
         <Route path="*" element={<NotFound />} />
       </Routes>

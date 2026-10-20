@@ -1,7 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { Info, Play, Star } from "lucide-react";
-import type { TitleSummary } from "../api/types";
+import { useQueryClient } from "@tanstack/react-query";
+import type { TitleDetails, TitleSummary } from "../api/types";
+import { useSeriesProgress } from "../storage/progress";
 import { useGenres, usePrefetchTitle, useTitle } from "../hooks/queries";
 import { useOpenTitle } from "../hooks/useOpenTitle";
 import { Artwork } from "./Artwork";
@@ -18,12 +20,13 @@ interface Props {
   sizes?: string;
 }
 
-export function TitleCard({ item, badge, sizes = "(max-width: 480px) 33vw, (max-width: 1024px) 20vw, 15vw" }: Props) {
+export function TitleCard({ item, badge: badgeProp, sizes = "(max-width: 480px) 33vw, (max-width: 1024px) 20vw, 15vw" }: Props) {
   const { openDetails, play } = useOpenTitle();
   const prefetch = usePrefetchTitle();
   const ref = useRef<HTMLButtonElement>(null);
   const timer = useRef<ReturnType<typeof setTimeout>>();
   const [rect, setRect] = useState<DOMRect | null>(null);
+  const badge = useNewEpisodeBadge(item) ?? badgeProp;
 
   const start = () => {
     clearTimeout(timer.current);
@@ -153,4 +156,14 @@ export function formatRuntime(min: number) {
   const h = Math.floor(min / 60);
   const m = min % 60;
   return h ? `${h}h${m ? ` ${m}min` : ""}` : `${m}min`;
+}
+
+/** "Novo episódio": o último episódio da série saiu depois da última vez que você assistiu. Usa só o cache. */
+function useNewEpisodeBadge(item: TitleSummary) {
+  const progress = useSeriesProgress(item.type === "tv" ? item.id : -1);
+  const qc = useQueryClient();
+  if (!progress) return null;
+  const details = qc.getQueryData<TitleDetails>(["title", "tv", item.id]);
+  const last = details?.lastAirDate ? Date.parse(details.lastAirDate) : NaN;
+  return last > progress.updatedAt ? "Novo episódio" : null;
 }
