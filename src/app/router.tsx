@@ -1,8 +1,9 @@
-import { lazy } from "react";
-import { createBrowserRouter, Route, Routes, useLocation, type Location } from "react-router-dom";
+import { lazy, Suspense } from "react";
+import { createBrowserRouter, Outlet, Route, Routes, useLocation, useParams, type Location } from "react-router-dom";
 import { AppLayout } from "./App";
 import Home from "../pages/Home";
 import NotFound from "../pages/NotFound";
+import { PlayerSkeleton } from "../player/PlayerSkeleton";
 
 const Browse = lazy(() => import("../pages/Browse"));
 const Categories = lazy(() => import("../pages/Categories"));
@@ -11,6 +12,11 @@ const Search = lazy(() => import("../pages/Search"));
 const MyList = lazy(() => import("../pages/MyList"));
 const DetailsPage = lazy(() => import("../pages/Details"));
 const DetailsModal = lazy(() => import("../pages/Details").then(m => ({ default: m.DetailsModal })));
+
+// Players em chunks próprios: o hls.js só baixa quando alguém dá play
+const MoviePlayerPage = lazy(() => import("../player/MoviePlayerPage"));
+const SeriesPlayerPage = lazy(() => import("../player/SeriesPlayerPage"));
+const SeriesEntry = lazy(() => import("../player/SeriesPlayerPage").then(m => ({ default: m.SeriesEntry })));
 
 /** Páginas com navbar. Com state.background, os detalhes abrem como modal sobre a página de fundo. */
 function MainRoutes() {
@@ -39,7 +45,33 @@ function MainRoutes() {
   );
 }
 
+function PlayerShell() {
+  return (
+    <Suspense fallback={<PlayerSkeleton />}>
+      <Outlet />
+    </Suspense>
+  );
+}
+
+function KeyedMoviePlayer() {
+  const { id } = useParams();
+  return <MoviePlayerPage key={id} />;
+}
+
+function KeyedSeriesPlayer() {
+  const { id } = useParams();
+  return <SeriesPlayerPage key={id} />;
+}
+
 export const router = createBrowserRouter([
+  {
+    element: <PlayerShell />,
+    children: [
+      { path: "/assistir/filme/:id", element: <KeyedMoviePlayer /> },
+      { path: "/assistir/serie/:id", element: <SeriesEntry /> },
+      { path: "/assistir/serie/:id/:temporada/:episodio", element: <KeyedSeriesPlayer /> },
+    ],
+  },
   {
     element: <AppLayout />,
     children: [{ path: "*", element: <MainRoutes /> }],

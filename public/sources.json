@@ -1,0 +1,51 @@
+{
+  "version": 1,
+  "movies": {
+    "10378": {
+      "kind": "hls",
+      "url": "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8",
+      "subtitles": [
+        { "lang": "pt-BR", "label": "Português", "url": "/subs/big-buck-bunny.pt-BR.vtt" }
+      ],
+      "markers": { "creditsStart": 560 },
+      "attribution": "Big Buck Bunny © Blender Foundation · peach.blender.org · CC BY 3.0"
+    },
+    "45745": {
+      "kind": "mp4",
+      "url": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/Sintel.mp4",
+      "markers": { "creditsStart": 852 },
+      "attribution": "Sintel © Blender Foundation · durian.blender.org · CC BY 3.0"
+    },
+    "133701": {
+      "kind": "mp4",
+      "url": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4",
+      "markers": { "creditsStart": 620 },
+      "attribution": "Tears of Steel © Blender Foundation · mango.blender.org · CC BY 3.0"
+    },
+    "9761": {
+      "kind": "mp4",
+      "url": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4",
+      "attribution": "Elephants Dream © Blender Foundation · orange.blender.org · CC BY 2.5"
+    }
+  },
+  "series": {
+    "_exemplo": {
+      "_nota": "Série de teste: troque '_exemplo' pelo ID TMDB de uma série e aponte cada episódio para um vídeo com direito de exibição.",
+      "seasons": {
+        "1": {
+          "1": {
+            "kind": "mp4",
+            "url": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
+            "markers": { "introStart": 0, "introEnd": 25, "creditsStart": 560 }
+          },
+          "2": { "kind": "hls", "url": "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8", "markers": { "introStart": 0, "introEnd": 25 } },
+          "3": { "kind": "mp4", "url": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4" }
+        },
+        "2": {
+          "1": { "kind": "mp4", "url": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/Sintel.mp4", "markers": { "creditsStart": 852 } },
+          "2": { "kind": "mp4", "url": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4", "markers": { "creditsStart": 620 } }
+        }
+      }
+    }
+  }
+}

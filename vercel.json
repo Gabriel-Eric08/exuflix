@@ -3,7 +3,7 @@
   "framework": "vite",
   "rewrites": [
     { "source": "/api/tmdb/:path*", "destination": "/api/tmdb?path=:path*" },
-    { "source": "/((?!api/|assets/|sources.json|favicon.svg|manifest.webmanifest|icon-).*)", "destination": "/index.html" }
+    { "source": "/((?!api/).*)", "destination": "/index.html" }
   ],
   "headers": [
     {
