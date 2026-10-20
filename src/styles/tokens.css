@@ -1,0 +1,112 @@
+:root {
+  color-scheme: dark;
+
+  /* Fundos */
+  --bg: #0b0a0a;
+  --surface-1: #141212;
+  --surface-2: #1e1a1a;
+  --surface-3: #2a2424;
+  --border: #2f2828;
+
+  /* Texto */
+  --text-1: #f5f1ee;
+  --text-2: #c9c1bc;
+  --text-3: #8e8580;
+
+  /* Marca */
+  --exu-red-300: #ff6b6f;
+  --exu-red-500: #e3262b;
+  --exu-red-600: #c21b20;
+  --exu-red-900: #3a0d0e;
+  --gold-400: #f2b544;
+  --gold-600: #c98f1e;
+
+  /* Estados */
+  --success: #2bb673;
+  --warning: #f2b544;
+  --danger: #ff4d4f;
+  --focus-ring: var(--gold-400);
+
+  /* Overlays */
+  --scrim-bottom: linear-gradient(to top, var(--bg) 0%, rgba(11, 10, 10, 0.6) 35%, transparent 70%);
+  --scrim-left: linear-gradient(to right, rgba(11, 10, 10, 0.92) 0%, rgba(11, 10, 10, 0.5) 40%, transparent 70%);
+  --scrim-player: linear-gradient(to top, rgba(0, 0, 0, 0.85) 0%, transparent 30%, transparent 75%, rgba(0, 0, 0, 0.6) 100%);
+
+  /* Tipografia */
+  --font-display: "Unbounded", "Manrope", system-ui, sans-serif;
+  --font-ui: "Manrope", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+
+  --fs-xs: 0.75rem;
+  --fs-sm: 0.875rem;
+  --fs-md: 1rem;
+  --fs-lg: clamp(1.05rem, 0.9rem + 0.5vw, 1.25rem);
+  --fs-xl: clamp(1.4rem, 1rem + 1.4vw, 2rem);
+  --fs-hero: clamp(2rem, 1.2rem + 4vw, 4.5rem);
+  --fs-top10: clamp(5rem, 3rem + 8vw, 10rem);
+
+  --lh-tight: 1.1;
+  --lh-normal: 1.5;
+
+  /* Espaço */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 64px;
+
+  --gutter: clamp(16px, 4vw, 64px);
+  --row-gap: clamp(24px, 3vw, 48px);
+
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius-pill: 999px;
+
+  /* Elevação */
+  --shadow-1: 0 2px 8px rgba(0, 0, 0, 0.35);
+  --shadow-2: 0 8px 24px rgba(0, 0, 0, 0.5);
+  --shadow-3: 0 20px 60px rgba(0, 0, 0, 0.65);
+  --glow-red: 0 0 0 1px rgba(227, 38, 43, 0.5), 0 8px 30px rgba(227, 38, 43, 0.25);
+
+  /* Movimento */
+  --ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-1: 120ms;
+  --dur-2: 200ms;
+  --dur-3: 320ms;
+  --dur-4: 500ms;
+
+  /* Layout */
+  --nav-h: 64px;
+  --tabbar-h: 0px;
+
+  /* Cards por linha (seção 2.5) */
+  --posters-per-row: 3.2;
+  --backdrops-per-row: 1.6;
+}
+
+@media (min-width: 480px) {
+  :root { --posters-per-row: 4.2; --backdrops-per-row: 2.2; }
+}
+@media (min-width: 768px) {
+  :root { --posters-per-row: 5; --backdrops-per-row: 3; }
+}
+@media (min-width: 1024px) {
+  :root { --posters-per-row: 6; --backdrops-per-row: 4; }
+}
+@media (min-width: 1440px) {
+  :root { --posters-per-row: 7; --backdrops-per-row: 5; }
+}
+@media (max-width: 767px) {
+  :root { --nav-h: 56px; --tabbar-h: 60px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 1ms !important;
+    transition-duration: 1ms !important;
+  }
+}

@@ -1,0 +1,47 @@
+.frame {
+  position: relative;
+  overflow: hidden;
+  background: var(--surface-2);
+  width: 100%;
+}
+.frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.poster { aspect-ratio: 2 / 3; }
+.wide { aspect-ratio: 16 / 9; }
+
+.fallback {
+  display: grid;
+  place-items: center;
+  padding: var(--space-3);
+  text-align: center;
+}
+
+.watermark {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 9rem;
+  color: var(--exu-red-500);
+  opacity: 0.06;
+  line-height: 1;
+}
+
+.fallbackTitle {
+  position: relative;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: var(--fs-sm);
+  line-height: var(--lh-tight);
+  color: var(--text-2);
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}

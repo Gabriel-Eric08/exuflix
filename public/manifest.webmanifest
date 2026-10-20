@@ -1,0 +1,13 @@
+{
+  "name": "Exuflix",
+  "short_name": "Exuflix",
+  "description": "Toda história passa por aqui.",
+  "lang": "pt-BR",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0B0A0A",
+  "theme_color": "#0B0A0A",
+  "icons": [
+    { "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
+  ]
+}

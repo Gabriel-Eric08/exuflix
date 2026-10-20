@@ -1,0 +1,14 @@
+.sk {
+  border-radius: var(--radius-md);
+  background: linear-gradient(100deg, var(--surface-2) 30%, var(--surface-3) 50%, var(--surface-2) 70%);
+  background-size: 300% 100%;
+  animation: shimmer 1.4s linear infinite;
+}
+
+.poster { aspect-ratio: 2 / 3; width: 100%; }
+.wide { aspect-ratio: 16 / 9; width: 100%; }
+
+@keyframes shimmer {
+  from { background-position: 100% 0; }
+  to { background-position: -50% 0; }
+}

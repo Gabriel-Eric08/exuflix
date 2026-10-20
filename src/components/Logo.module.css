@@ -1,0 +1,53 @@
+.wordmark {
+  font-family: var(--font-display);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  color: var(--text-1);
+  line-height: 1;
+  font-size: 1.6rem;
+  min-width: 72px;
+  user-select: none;
+}
+
+.x {
+  color: var(--exu-red-500);
+}
+
+.mono .x {
+  color: inherit;
+}
+
+.animated .stroke1,
+.animated .stroke2 {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: draw 300ms var(--ease-out) forwards;
+}
+.animated .stroke2 {
+  animation-delay: 300ms;
+}
+.animated .dot {
+  transform-origin: 32px 32px;
+  transform: scale(0);
+  animation: pop 200ms var(--ease-out) 600ms forwards;
+}
+
+@keyframes draw {
+  to { stroke-dashoffset: 0; }
+}
+@keyframes pop {
+  to { transform: scale(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animated .stroke1,
+  .animated .stroke2 { stroke-dashoffset: 0; animation: none; }
+  .animated .dot { transform: none; animation: none; }
+}
+
+.splash {
+  min-height: 60vh;
+  display: grid;
+  place-items: center;
+}

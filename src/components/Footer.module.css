@@ -1,0 +1,42 @@
+.footer {
+  margin-top: var(--space-8);
+  padding: var(--space-7) var(--gutter) calc(var(--tabbar-h) + var(--space-7));
+  border-top: 1px solid var(--border);
+  display: grid;
+  gap: var(--space-5);
+  color: var(--text-3);
+  font-size: var(--fs-sm);
+}
+
+.top {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-4);
+}
+
+.wordmark {
+  font-size: 1.25rem;
+}
+
+.tagline {
+  color: var(--text-2);
+  font-weight: 600;
+}
+
+.links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3) var(--space-5);
+}
+.links a:hover {
+  color: var(--text-1);
+}
+
+.tmdb {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3);
+  font-size: var(--fs-xs);
+}
