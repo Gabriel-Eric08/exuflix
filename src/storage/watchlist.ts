@@ -1,5 +1,6 @@
 import { useStored } from "./useStored";
 import type { MetaSnapshot } from "./progress";
+import type { TitleSummary } from "../api/types";
 
 export interface WatchlistItem {
   key: string;
@@ -26,3 +27,20 @@ export const useWatchlist = () => {
   };
   return { list, has, toggle };
 };
+
+/** Reconstrói um TitleSummary a partir do snapshot salvo: renderiza cards sem chamar a API. */
+export const fromSnapshot = (i: Pick<WatchlistItem, "key" | "type" | "id" | "meta">): TitleSummary => ({
+  key: i.key,
+  id: i.id,
+  type: i.type,
+  title: i.meta.title,
+  originalTitle: i.meta.title,
+  overview: "",
+  year: null,
+  rating: 0,
+  voteCount: 0,
+  genreIds: [],
+  poster: i.meta.poster,
+  backdrop: i.meta.backdrop,
+  popularity: 0,
+});

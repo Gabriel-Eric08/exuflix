@@ -4,6 +4,7 @@ import { Navbar } from "../components/Navbar";
 import { Footer } from "../components/Footer";
 import { ToastHost } from "../components/Toast";
 import { Splash } from "../components/Logo";
+import { TrailerHost } from "../components/Trailer";
 
 /** Layout com navbar e rodapé (os players ficam fora dele). */
 export function AppLayout() {
@@ -18,6 +19,7 @@ export function AppLayout() {
       </div>
       <Footer />
       <ToastHost />
+      <TrailerHost />
       <ScrollRestoration getKey={loc => loc.pathname + loc.search} />
     </>
   );

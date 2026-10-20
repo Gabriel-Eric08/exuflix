@@ -125,7 +125,7 @@ function Slide({ item, active, first }: { item: TitleSummary; active: boolean; f
         </div>
         <p className={styles.overview}>{item.overview}</p>
         <div className={styles.actions}>
-          <PlayButton type={item.type} id={item.id} seasons={details?.seasons} variant="light" />
+          <PlayButton type={item.type} id={item.id} title={item.title} seasons={details?.seasons} trailer={details?.trailer} />
           <button className="btn btn-ghost" onClick={() => openDetails(item.type, item.id)}>
             <Info size={20} /> Mais informações
           </button>

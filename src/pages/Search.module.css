@@ -1,0 +1,115 @@
+.head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--space-6) var(--gutter) var(--space-3);
+}
+
+.title {
+  font-weight: 700;
+  font-size: var(--fs-lg);
+  color: var(--text-2);
+}
+.title span {
+  color: var(--text-1);
+}
+
+.chips {
+  display: flex;
+  gap: var(--space-2);
+}
+
+.mobileField {
+  display: none;
+}
+
+.section {
+  margin-top: var(--space-6);
+}
+
+.sectionHead {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  padding: 0 var(--gutter);
+  margin-bottom: var(--space-4);
+}
+.sectionHead h2 {
+  font-weight: 700;
+  font-size: var(--fs-lg);
+}
+
+.clearAll {
+  color: var(--text-3);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+}
+.clearAll:hover {
+  color: var(--text-1);
+}
+
+.recent {
+  list-style: none;
+  margin: 0;
+  padding: 0 var(--gutter);
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+.recent li {
+  display: flex;
+  align-items: center;
+  border-radius: var(--radius-pill);
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+}
+
+.recentItem {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  height: 36px;
+  padding: 0 var(--space-2) 0 var(--space-4);
+  font-weight: 600;
+  font-size: var(--fs-sm);
+  color: var(--text-2);
+}
+.recentItem:hover {
+  color: var(--text-1);
+}
+
+.remove {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 36px;
+  color: var(--text-3);
+}
+
+@media (max-width: 767px) {
+  .mobileField {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    margin: var(--space-4) var(--gutter) 0;
+    padding: 0 var(--space-4);
+    height: 48px;
+    border-radius: var(--radius-md);
+    background: var(--surface-3);
+    color: var(--text-3);
+  }
+  .mobileField input {
+    flex: 1;
+    min-width: 0;
+    border: 0;
+    background: transparent;
+    outline: none;
+    color: var(--text-1);
+    font-size: 16px;
+  }
+  .mobileField input::-webkit-search-cancel-button {
+    display: none;
+  }
+}

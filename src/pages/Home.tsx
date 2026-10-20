@@ -1,6 +1,7 @@
 import { api } from "../api/endpoints";
 import { Hero } from "../components/Hero";
 import { QueryRow } from "../components/Row";
+import { WatchlistRow } from "../components/WatchlistRow";
 import { useRow } from "../hooks/queries";
 import { useDocumentTitle } from "../hooks/useDocumentTitle";
 
@@ -12,6 +13,7 @@ export default function Home() {
     <main>
       <Hero items={hero.data ?? []} loading={hero.isLoading} />
       <QueryRow eager variant="top10" title="Top 10 no Brasil hoje" queryKey={["trending", "all", "day"]} fetcher={() => api.trending("all", "day")} />
+      <WatchlistRow />
       <QueryRow eager title="Lançamentos nos cinemas" queryKey={["movie", "now_playing"]} fetcher={() => api.list("movie", "now_playing")} type="movie" seeAllHref="/filmes?ordem=lancamentos" />
       <QueryRow title="Séries em alta" queryKey={["trending", "tv", "week"]} fetcher={() => api.trending("tv", "week")} type="tv" seeAllHref="/series" />
       <QueryRow title="Filmes em alta" queryKey={["trending", "movie", "week"]} fetcher={() => api.trending("movie", "week")} type="movie" seeAllHref="/filmes" />

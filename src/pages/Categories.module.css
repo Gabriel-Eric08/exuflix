@@ -1,0 +1,60 @@
+.h2 {
+  padding: 0 var(--gutter);
+  margin: var(--space-5) 0 var(--space-4);
+  font-weight: 700;
+  font-size: var(--fs-lg);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(260px, 44vw), 1fr));
+  gap: var(--space-3);
+  padding: 0 var(--gutter);
+}
+
+.card {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background: var(--surface-2);
+  box-shadow: var(--shadow-1);
+  border-bottom: 3px solid var(--exu-red-500);
+  display: flex;
+  align-items: flex-end;
+  transition: transform var(--dur-2) var(--ease-out), box-shadow var(--dur-2);
+}
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-2);
+}
+.gold {
+  border-bottom-color: var(--gold-400);
+}
+
+.card img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--dur-4) var(--ease-out);
+}
+.card:hover img {
+  transform: scale(1.05);
+}
+
+.scrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(11, 10, 10, 0.92), rgba(11, 10, 10, 0.25) 70%);
+}
+
+.name {
+  position: relative;
+  padding: var(--space-4);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(1rem, 0.8rem + 0.8vw, 1.4rem);
+  line-height: var(--lh-tight);
+}
