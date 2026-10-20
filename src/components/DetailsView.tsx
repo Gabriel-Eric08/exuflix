@@ -54,7 +54,13 @@ function Details({ t, page }: { t: TitleDetails; page: boolean }) {
       <header className={styles.top}>
         <div className={styles.backdrop}>
           {t.backdrop && (
-            <img src={img(t.backdrop, "w1280")!} srcSet={backdropSrcSet(t.backdrop)} sizes="(max-width: 900px) 100vw, 900px" alt="" />
+            <img
+              src={img(t.backdrop, "w1280")!}
+              srcSet={backdropSrcSet(t.backdrop)}
+              sizes="(max-width: 900px) 100vw, 900px"
+              alt=""
+              onError={e => (e.currentTarget.style.visibility = "hidden")}
+            />
           )}
         </div>
         <div className={styles.scrim} />

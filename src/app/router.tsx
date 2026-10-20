@@ -4,6 +4,7 @@ import { AppLayout } from "./App";
 import Home from "../pages/Home";
 import NotFound from "../pages/NotFound";
 import { PlayerSkeleton } from "../player/PlayerSkeleton";
+import { ErrorBoundary } from "../components/ErrorBoundary";
 
 const Browse = lazy(() => import("../pages/Browse"));
 const Categories = lazy(() => import("../pages/Categories"));
@@ -49,9 +50,11 @@ function MainRoutes() {
 
 function PlayerShell() {
   return (
-    <Suspense fallback={<PlayerSkeleton />}>
-      <Outlet />
-    </Suspense>
+    <ErrorBoundary>
+      <Suspense fallback={<PlayerSkeleton />}>
+        <Outlet />
+      </Suspense>
+    </ErrorBoundary>
   );
 }
 

@@ -7,6 +7,7 @@ import { useOpenTitle } from "../hooks/useOpenTitle";
 import { Certification } from "./Certification";
 import { PlayButton } from "./PlayButton";
 import { formatRuntime } from "./TitleCard";
+import { usePreferences } from "../storage/preferences";
 import { Skeleton } from "./Skeleton";
 import styles from "./Hero.module.css";
 
@@ -16,6 +17,7 @@ export function Hero({ items, loading }: { items: TitleSummary[]; loading?: bool
   const slides = items.filter(i => i.backdrop && i.overview).slice(0, 5);
   const [index, setIndex] = useState(0);
   const [paused, setPaused] = useState(false);
+  const [previewing, setPreviewing] = useState(false);
   const prefetch = usePrefetchTitle();
   const reduced = typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
@@ -25,10 +27,10 @@ export function Hero({ items, loading }: { items: TitleSummary[]; loading?: bool
   }, [slides.map(s => s.key).join()]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
-    if (paused || reduced || slides.length < 2) return;
+    if (paused || previewing || reduced || slides.length < 2) return;
     const id = setTimeout(() => setIndex(i => (i + 1) % slides.length), ROTATE_MS);
     return () => clearTimeout(id);
-  }, [index, paused, reduced, slides.length]);
+  }, [index, paused, previewing, reduced, slides.length]);
 
   if (loading || slides.length === 0) {
     return (
@@ -49,7 +51,7 @@ export function Hero({ items, loading }: { items: TitleSummary[]; loading?: bool
       onBlur={() => setPaused(false)}
     >
       {slides.map((s, i) => (
-        <Slide key={s.key} item={s} active={i === index} first={i === 0} />
+        <Slide key={s.key} item={s} active={i === index} first={i === 0} onPreview={setPreviewing} />
       ))}
       {slides.length > 1 && (
         <div className={styles.dots} role="tablist" aria-label="Escolher destaque">
@@ -60,7 +62,7 @@ export function Hero({ items, loading }: { items: TitleSummary[]; loading?: bool
               aria-selected={i === index}
               aria-label={`Destaque ${i + 1}: ${s.title}`}
               className={`${styles.dot} ${i === index ? styles.dotActive : ""}`}
-              onClick={() => setIndex(i)}
+              onClick={() => { setPreviewing(false); setIndex(i); }}
             />
           ))}
         </div>
@@ -69,7 +71,7 @@ export function Hero({ items, loading }: { items: TitleSummary[]; loading?: bool
   );
 }
 
-function Slide({ item, active, first }: { item: TitleSummary; active: boolean; first: boolean }) {
+function Slide({ item, active, first, onPreview }: { item: TitleSummary; active: boolean; first: boolean; onPreview: (on: boolean) => void }) {
   const { data: details } = useTitle(item.type, item.id);
   const { data: genres } = useGenres(item.type);
   const { openDetails } = useOpenTitle();
@@ -78,6 +80,10 @@ function Slide({ item, active, first }: { item: TitleSummary; active: boolean; f
   useEffect(() => {
     if (ref.current) ref.current.inert = !active;
   }, [active]);
+  const preview = useTrailerPreview(active, details?.trailer?.key);
+  useEffect(() => {
+    if (active) onPreview(!!preview);
+  }, [active, preview]); // eslint-disable-line react-hooks/exhaustive-deps
   const genreNames = (details?.genres ?? item.genreIds.map(id => genres?.find(g => g.id === id)).filter(Boolean))
     .slice(0, 2)
     .map(g => g!.name);
@@ -100,8 +106,20 @@ function Slide({ item, active, first }: { item: TitleSummary; active: boolean; f
           decoding="async"
           // @ts-expect-error atributo ainda não tipado no React 18
           fetchpriority={first ? "high" : undefined}
+          onError={e => (e.currentTarget.style.visibility = "hidden")}
         />
       </picture>
+      {preview && (
+        <iframe
+          className={styles.preview}
+          src={`https://www.youtube-nocookie.com/embed/${preview}?autoplay=1&mute=1&controls=0&loop=1&playlist=${preview}&modestbranding=1&rel=0&playsinline=1&disablekb=1&iv_load_policy=3`}
+          title=""
+          tabIndex={-1}
+          aria-hidden
+          allow="autoplay; encrypted-media"
+          onLoad={e => e.currentTarget.classList.add(styles.previewOn)}
+        />
+      )}
       <div className={styles.scrim} />
       <div className={styles.content}>
         {details?.logo ? (
@@ -133,4 +151,21 @@ function Slide({ item, active, first }: { item: TitleSummary; active: boolean; f
       </div>
     </div>
   );
+}
+
+/** Trailer mudo em loop após 3 s, só no desktop, com "Prévias automáticas" ligado e sem reduced-motion. */
+function useTrailerPreview(active: boolean, key: string | undefined) {
+  const [prefs] = usePreferences();
+  const [on, setOn] = useState(false);
+  useEffect(() => {
+    setOn(false);
+    if (!active || !key || !prefs.autoplayPreviews) return;
+    const ok =
+      window.matchMedia("(min-width: 1024px) and (hover: hover)").matches &&
+      !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (!ok) return;
+    const id = setTimeout(() => setOn(true), 3000);
+    return () => clearTimeout(id);
+  }, [active, key, prefs.autoplayPreviews]);
+  return on ? key! : null;
 }

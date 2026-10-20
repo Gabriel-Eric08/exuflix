@@ -17,6 +17,8 @@ export default defineConfig(({ mode }) => {
       },
     },
     build: {
+      // hls.js (~600 kB) só carrega sob demanda no player
+      chunkSizeWarningLimit: 700,
       rollupOptions: {
         output: {
           manualChunks: {

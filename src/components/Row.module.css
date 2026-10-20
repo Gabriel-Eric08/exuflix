@@ -5,6 +5,8 @@
 .row {
   --gap: clamp(6px, 0.8vw, 12px);
   --n: var(--posters-per-row);
+  position: relative;
+  z-index: 1;
   margin-bottom: var(--row-gap);
 }
 .wide {
@@ -128,8 +130,8 @@
 }
 .rank {
   flex: none;
-  width: 52%;
-  margin-right: -22%;
+  width: 42%;
+  margin-right: -8%;
   font-family: var(--font-display);
   font-weight: 800;
   font-size: var(--fs-top10);
@@ -142,6 +144,7 @@
 }
 .top10Card {
   position: relative;
+  z-index: 1;
   flex: 1;
   min-width: 0;
 }

@@ -12,19 +12,19 @@
     },
     "45745": {
       "kind": "mp4",
-      "url": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/Sintel.mp4",
+      "url": "https://archive.org/download/Sintel/sintel-2048-surround_512kb.mp4",
       "markers": { "creditsStart": 852 },
       "attribution": "Sintel © Blender Foundation · durian.blender.org · CC BY 3.0"
     },
     "133701": {
-      "kind": "mp4",
-      "url": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4",
+      "kind": "hls",
+      "url": "https://demo.unified-streaming.com/k8s/features/stable/video/tears-of-steel/tears-of-steel.ism/.m3u8",
       "markers": { "creditsStart": 620 },
       "attribution": "Tears of Steel © Blender Foundation · mango.blender.org · CC BY 3.0"
     },
     "9761": {
       "kind": "mp4",
-      "url": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4",
+      "url": "https://archive.org/download/ElephantsDream/ed_1024_512kb.mp4",
       "attribution": "Elephants Dream © Blender Foundation · orange.blender.org · CC BY 2.5"
     }
   },
@@ -34,16 +34,15 @@
       "seasons": {
         "1": {
           "1": {
-            "kind": "mp4",
-            "url": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
+            "kind": "hls",
+            "url": "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8",
             "markers": { "introStart": 0, "introEnd": 25, "creditsStart": 560 }
           },
-          "2": { "kind": "hls", "url": "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8", "markers": { "introStart": 0, "introEnd": 25 } },
-          "3": { "kind": "mp4", "url": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4" }
+          "2": { "kind": "mp4", "url": "https://archive.org/download/ElephantsDream/ed_1024_512kb.mp4", "markers": { "introStart": 0, "introEnd": 20 } },
+          "3": { "kind": "mp4", "url": "https://archive.org/download/Sintel/sintel-2048-surround_512kb.mp4", "markers": { "creditsStart": 852 } }
         },
         "2": {
-          "1": { "kind": "mp4", "url": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/Sintel.mp4", "markers": { "creditsStart": 852 } },
-          "2": { "kind": "mp4", "url": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4", "markers": { "creditsStart": 620 } }
+          "1": { "kind": "hls", "url": "https://demo.unified-streaming.com/k8s/features/stable/video/tears-of-steel/tears-of-steel.ism/.m3u8", "markers": { "creditsStart": 620 } }
         }
       }
     }
