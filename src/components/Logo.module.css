@@ -51,3 +51,18 @@
   display: grid;
   place-items: center;
 }
+
+.xt {
+  display: inline-flex;
+  align-items: baseline;
+  white-space: nowrap;
+  font-size: 1.25rem;
+}
+.xtSub {
+  font-family: var(--font-ui);
+  font-weight: 700;
+  text-transform: none;
+  letter-spacing: 0;
+  font-size: 0.8em;
+  color: var(--oxossi-400);
+}

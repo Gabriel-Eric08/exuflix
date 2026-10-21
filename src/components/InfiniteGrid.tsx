@@ -14,6 +14,8 @@ interface Props {
   fetchNextPage?: () => void;
   onRetry?: () => void;
   empty?: React.ReactNode;
+  /** Esconde títulos sem pôster (padrão no TMDB; no IPTV o card mostra o nome) */
+  requirePoster?: boolean;
 }
 
 const MIN_CARD = 120;
@@ -40,10 +42,10 @@ function useColumns(ref: React.RefObject<HTMLElement>, version: number) {
 }
 
 /** Grade infinita de pôsteres virtualizada por linhas. */
-export function InfiniteGrid({ items, isLoading, isError, hasNextPage, isFetchingNextPage, fetchNextPage, onRetry, empty }: Props) {
+export function InfiniteGrid({ items, isLoading, isError, hasNextPage, isFetchingNextPage, fetchNextPage, onRetry, empty, requirePoster = true }: Props) {
   const ref = useRef<HTMLDivElement>(null);
   const { cols, width, gap, offset } = useColumns(ref, items?.length ?? 0);
-  const list = (items ?? []).filter(i => i.poster);
+  const list = requirePoster ? (items ?? []).filter(i => i.poster) : items ?? [];
   const rowCount = Math.ceil(list.length / cols) + (hasNextPage ? 1 : 0);
   const rowHeight = width * 1.5 + gap * 2;
 

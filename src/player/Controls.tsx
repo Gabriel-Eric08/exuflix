@@ -55,6 +55,7 @@ interface Props {
   onLevel: (i: number) => void;
   onAudio: (i: number) => void;
   extra?: ReactNode;
+  live?: boolean;
   onMenuActivity: () => void;
 }
 
@@ -75,25 +76,35 @@ export function Controls(p: Props) {
       </div>
 
       <div className={styles.bottomBar}>
-        <div className={styles.timeline}>
-          <ProgressBar current={p.current} duration={p.duration} buffered={p.buffered} onSeek={p.onSeek} />
-          <span className={`${styles.time} tabular`}>
-            {formatTime(p.current)} / {formatTime(p.duration)}
-          </span>
-        </div>
+        {p.live ? (
+          <div className={styles.timeline}>
+            <span className={styles.liveBadge}>Ao vivo</span>
+          </div>
+        ) : (
+          <div className={styles.timeline}>
+            <ProgressBar current={p.current} duration={p.duration} buffered={p.buffered} onSeek={p.onSeek} />
+            <span className={`${styles.time} tabular`}>
+              {formatTime(p.current)} / {formatTime(p.duration)}
+            </span>
+          </div>
+        )}
 
         <div className={styles.buttons}>
           <button className={styles.ctrl} onClick={p.onTogglePlay} aria-label={p.playing ? "Pausar" : "Reproduzir"}>
             {p.playing ? <Pause size={28} fill="currentColor" /> : <Play size={28} fill="currentColor" />}
           </button>
-          <button className={`${styles.ctrl} ${styles.skip}`} onClick={() => p.onSeekBy(-10)} aria-label="Voltar 10 segundos">
-            <RotateCcw size={24} />
-            <span>10</span>
-          </button>
-          <button className={`${styles.ctrl} ${styles.skip}`} onClick={() => p.onSeekBy(10)} aria-label="Avançar 10 segundos">
-            <RotateCw size={24} />
-            <span>10</span>
-          </button>
+          {!p.live && (
+            <>
+              <button className={`${styles.ctrl} ${styles.skip}`} onClick={() => p.onSeekBy(-10)} aria-label="Voltar 10 segundos">
+                <RotateCcw size={24} />
+                <span>10</span>
+              </button>
+              <button className={`${styles.ctrl} ${styles.skip}`} onClick={() => p.onSeekBy(10)} aria-label="Avançar 10 segundos">
+                <RotateCw size={24} />
+                <span>10</span>
+              </button>
+            </>
+          )}
           <div className={styles.volume}>
             <button className={styles.ctrl} onClick={p.onToggleMute} aria-label={p.muted ? "Ativar som" : "Silenciar"}>
               <VolumeIcon size={26} />

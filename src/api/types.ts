@@ -137,6 +137,9 @@ export interface Season {
   episodeCount: number;
   poster: string | null;
   airDate: string | null;
+  /** Xtream: id do arquivo do episódio e extensão */
+  streamId?: string;
+  container?: string;
 }
 
 export interface TitleDetails extends TitleSummary {
@@ -155,6 +158,8 @@ export interface TitleDetails extends TitleSummary {
   seasons?: Season[];
   status?: string;
   lastAirDate?: string | null;
+  /** Xtream: extensão do arquivo do filme (mp4, mkv...) */
+  container?: string | null;
 }
 
 export interface Episode {
@@ -166,4 +171,7 @@ export interface Episode {
   still: string | null;
   runtime: number | null;
   airDate: string | null;
+  /** Xtream: id do arquivo do episódio e extensão */
+  streamId?: string;
+  container?: string;
 }

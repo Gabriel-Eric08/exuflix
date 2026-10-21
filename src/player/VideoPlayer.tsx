@@ -36,6 +36,10 @@ interface Props {
   onNext?: () => void;
   onSkipIntro?: () => void;
   children?: (s: PlayerState) => ReactNode;
+  /** TV ao vivo: sem linha do tempo nem atalhos de avançar/voltar */
+  live?: boolean;
+  /** Conteúdo extra na tela de erro (ex.: abrir no VLC) */
+  errorExtra?: ReactNode;
 }
 
 const HIDE_AFTER = 3000;
@@ -61,6 +65,8 @@ export const VideoPlayer = forwardRef<HTMLVideoElement, Props>(function VideoPla
     onNext,
     onSkipIntro,
     children,
+    live = false,
+    errorExtra,
   },
   ref,
 ) {
@@ -273,8 +279,8 @@ export const VideoPlayer = forwardRef<HTMLVideoElement, Props>(function VideoPla
 
   usePlayerKeyboard({
     togglePlay,
-    seekBy,
-    seekToFraction: f => seekTo((v().duration || 0) * f),
+    seekBy: live ? () => {} : seekBy,
+    seekToFraction: f => { if (!live) seekTo((v().duration || 0) * f); },
     volumeBy: d => setVol(v().volume + d),
     toggleMute,
     toggleFullscreen,
@@ -423,7 +429,15 @@ export const VideoPlayer = forwardRef<HTMLVideoElement, Props>(function VideoPla
         </div>
       )}
 
-      {!playing && !error && !waiting && (
+      {!playing && !error && !waiting && live && (
+        <div className={styles.center}>
+          <button className={styles.centerPlay} onClick={togglePlay} aria-label="Reproduzir">
+            <Play size={36} fill="currentColor" />
+          </button>
+        </div>
+      )}
+
+      {!playing && !error && !waiting && !live && (
         <div className={styles.center}>
           <button className={styles.centerSkip} onClick={() => seekBy(-10)} aria-label="Voltar 10 segundos">
             <RotateCcw size={32} />
@@ -446,6 +460,7 @@ export const VideoPlayer = forwardRef<HTMLVideoElement, Props>(function VideoPla
             <button className="btn btn-primary" onClick={() => setAttempt(a => a + 1)}>Tentar de novo</button>
             <button className="btn btn-ghost" onClick={onBack}>Voltar</button>
           </div>
+          {errorExtra}
         </div>
       )}
 
@@ -453,6 +468,7 @@ export const VideoPlayer = forwardRef<HTMLVideoElement, Props>(function VideoPla
 
       <Controls
         heading={heading}
+        live={live}
         onBack={onBack}
         playing={playing}
         current={current}

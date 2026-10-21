@@ -1,7 +1,8 @@
 import { useQuery, useInfiniteQuery, useQueryClient } from "@tanstack/react-query";
 import { api } from "../api/endpoints";
-import { toSummaries, toDetails, toEpisodes } from "../api/normalize";
+import { toSummaries } from "../api/normalize";
 import type { DiscoverFilters, MediaType, Paged, TmdbListItem } from "../api/types";
+import { tmdbCatalog, useCatalog } from "../catalog/CatalogContext";
 
 const HOUR = 60 * 60 * 1000;
 
@@ -18,29 +19,21 @@ export const useRow = (
     enabled,
   });
 
-export const useGenres = (type: MediaType) =>
-  useQuery({
-    queryKey: ["genres", type],
-    queryFn: async () => (await api.genres(type)).genres,
-    staleTime: 24 * HOUR,
-  });
+/** Gêneros (TMDB) ou categorias (Xtream), conforme o catálogo atual. */
+export const useGenres = (type: MediaType) => useQuery(useCatalog().genresQuery(type));
 
-export const titleQuery = (type: MediaType, id: number) => ({
-  queryKey: ["title", type, id],
-  queryFn: async () => toDetails(type === "movie" ? await api.movie(id) : await api.tv(id), type),
-  staleTime: 6 * HOUR,
-});
+/** Detalhes no TMDB (fora de um CatalogProvider). */
+export const titleQuery = tmdbCatalog.titleQuery;
 
 export const useTitle = (type: MediaType, id: number, enabled = true) =>
-  useQuery({ ...titleQuery(type, id), enabled: enabled && id > 0 });
+  useQuery({ ...useCatalog().titleQuery(type, id), enabled: enabled && id > 0 });
 
-export const useSeason = (tvId: number, season: number) =>
-  useQuery({
-    queryKey: ["season", tvId, season],
-    queryFn: async () => toEpisodes(tvId, await api.season(tvId, season)),
-    staleTime: 6 * HOUR,
-    enabled: season > 0 && tvId > 0,
-  });
+export const useSeason = (tvId: number, season: number) => {
+  const catalog = useCatalog();
+  // Xtream pode ter "temporada 0" de verdade; no TMDB a 0 são os especiais, fora da lista
+  const minSeason = catalog.id === "xtream" ? 0 : 1;
+  return useQuery({ ...catalog.seasonQuery(tvId, season), enabled: season >= minSeason && tvId > 0 });
+};
 
 export const useDiscover = (type: MediaType, filters: DiscoverFilters, enabled = true) =>
   useInfiniteQuery({
@@ -67,5 +60,6 @@ export const useSearch = (query: string) =>
 /** Prefetch dos detalhes quando o card recebe hover/foco */
 export function usePrefetchTitle() {
   const qc = useQueryClient();
-  return (type: MediaType, id: number) => qc.prefetchQuery(titleQuery(type, id));
+  const catalog = useCatalog();
+  return (type: MediaType, id: number) => qc.prefetchQuery(catalog.titleQuery(type, id));
 }

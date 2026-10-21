@@ -1,7 +1,8 @@
 import { useNavigate } from "react-router-dom";
 import { useQueries } from "@tanstack/react-query";
 import { Play, X } from "lucide-react";
-import { titleQuery, useTitle } from "../hooks/queries";
+import { useTitle } from "../hooks/queries";
+import { tmdbCatalog, useCatalog } from "../catalog/CatalogContext";
 import { buildContinueWatching, type ContinueItem } from "../storage/continueWatching";
 import { useProgressStore } from "../storage/progress";
 import { useStored } from "../storage/useStored";
@@ -14,18 +15,19 @@ import styles from "./PersonalRows.module.css";
 const NO_HIDDEN: string[] = [];
 
 export function useContinueWatching() {
+  const catalog = useCatalog();
   const store = useProgressStore();
-  const [hidden] = useStored<string[]>("hidden", NO_HIDDEN);
+  const [hidden] = useStored<string[]>(catalog.ns + "hidden", NO_HIDDEN);
   // Séries precisam das temporadas para achar o próximo episódio: busca em segundo plano
   const tvIds = Object.values(store.items).filter(i => i.type === "tv").map(i => i.id);
-  const details = useQueries({ queries: tvIds.map(id => titleQuery("tv", id)) });
+  const details = useQueries({ queries: tvIds.map(id => catalog.titleQuery("tv", id)) });
   const seasons = new Map(tvIds.map((id, i) => [id, details[i].data?.seasons]));
-  return buildContinueWatching(store, hidden, id => seasons.get(id));
+  return buildContinueWatching(store, hidden, id => seasons.get(id), catalog.base);
 }
 
 export function ContinueWatchingRow() {
   const items = useContinueWatching();
-  const [, setHidden] = useStored<string[]>("hidden", NO_HIDDEN);
+  const [, setHidden] = useStored<string[]>(useCatalog().ns + "hidden", NO_HIDDEN);
   if (items.length === 0) return null;
   return (
     <Row title="Continuar assistindo" variant="wide">
@@ -86,7 +88,7 @@ export function AvailableNowRow() {
     ...Object.keys(registry?.movies ?? {}).filter(k => /^\d+$/.test(k)).map(k => ["movie", Number(k)] as const),
     ...Object.keys(registry?.series ?? {}).filter(k => /^\d+$/.test(k)).map(k => ["tv", Number(k)] as const),
   ];
-  const results = useQueries({ queries: ids.map(([t, id]) => titleQuery(t, id)) });
+  const results = useQueries({ queries: ids.map(([t, id]) => tmdbCatalog.titleQuery(t, id)) });
   const titles = results.map(r => r.data).filter((d): d is NonNullable<typeof d> => !!d && !!d.poster);
   if (titles.length === 0) return null;
   return (

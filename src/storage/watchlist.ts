@@ -1,3 +1,4 @@
+import { useCatalog } from "../catalog/CatalogContext";
 import { useStored } from "./useStored";
 import type { MetaSnapshot } from "./progress";
 import type { TitleSummary } from "../api/types";
@@ -13,7 +14,7 @@ export interface WatchlistItem {
 const EMPTY: WatchlistItem[] = [];
 
 export const useWatchlist = () => {
-  const [list, setList] = useStored<WatchlistItem[]>("watchlist", EMPTY);
+  const [list, setList] = useStored<WatchlistItem[]>(useCatalog().ns + "watchlist", EMPTY);
   const has = (key: string) => list.some(i => i.key === key);
   /** Retorna true se o item foi adicionado, false se foi removido. */
   const toggle = (item: Omit<WatchlistItem, "addedAt">) => {

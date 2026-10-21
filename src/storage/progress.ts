@@ -1,3 +1,4 @@
+import { useCatalog } from "../catalog/CatalogContext";
 import { useStored } from "./useStored";
 
 export interface MetaSnapshot {
@@ -40,7 +41,8 @@ export interface ProgressStore {
 
 export const EMPTY_PROGRESS: ProgressStore = { items: {} };
 
-export const useProgressStore = () => useStored<ProgressStore>("progress", EMPTY_PROGRESS)[0];
+/** Progresso do catálogo atual (Exuflix: "progress"; Xtream: "xt:progress"). */
+export const useProgressStore = () => useStored<ProgressStore>(useCatalog().ns + "progress", EMPTY_PROGRESS)[0];
 
 export function useMovieProgress(id: number) {
   const store = useProgressStore();

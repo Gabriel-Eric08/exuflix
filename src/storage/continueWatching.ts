@@ -19,6 +19,7 @@ export function buildContinueWatching(
   store: ProgressStore,
   hidden: string[],
   seasonsOf: (tvId: number) => { number: number; episodeCount: number }[] | undefined,
+  base = "",
 ): ContinueItem[] {
   const out: ContinueItem[] = [];
 
@@ -37,7 +38,7 @@ export function buildContinueWatching(
         poster: item.meta.poster,
         subtitle: `Faltam ${Math.max(1, Math.ceil((item.duration - item.position) / 60))} min`,
         progress: item.position / item.duration,
-        href: `/assistir/filme/${item.id}`,
+        href: `${base}/assistir/filme/${item.id}`,
         updatedAt: item.updatedAt,
       });
       continue;
@@ -55,7 +56,7 @@ export function buildContinueWatching(
         poster: item.meta.poster,
         subtitle: `T${season}:E${episode}${ep.title ? ` · ${ep.title}` : ""}`,
         progress: ep.duration ? ep.position / ep.duration : 0,
-        href: `/assistir/serie/${item.id}/${season}/${episode}`,
+        href: `${base}/assistir/serie/${item.id}/${season}/${episode}`,
         updatedAt: item.updatedAt,
       });
     } else {
@@ -71,7 +72,7 @@ export function buildContinueWatching(
         poster: item.meta.poster,
         subtitle: `Próximo: T${next.season}:E${next.episode}`,
         progress: 0,
-        href: `/assistir/serie/${item.id}/${next.season}/${next.episode}`,
+        href: `${base}/assistir/serie/${item.id}/${next.season}/${next.episode}`,
         updatedAt: item.updatedAt,
       });
     }

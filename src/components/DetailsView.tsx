@@ -6,7 +6,7 @@ import { img, backdropSrcSet } from "../api/images";
 import { TmdbError } from "../api/tmdb";
 import { useTitle } from "../hooks/queries";
 import { useDocumentTitle } from "../hooks/useDocumentTitle";
-import { episodeHref } from "../app/routes";
+import { useHrefs } from "../catalog/CatalogContext";
 import { useHasSource } from "../player/sources";
 import { useSeriesProgress } from "../storage/progress";
 import { Certification } from "./Certification";
@@ -154,6 +154,7 @@ function Credits({ label, names }: { label: string; names: string[] }) {
 }
 
 function SeriesEpisodes({ t }: { t: TitleDetails }) {
+  const hrefs = useHrefs();
   const navigate = useNavigate();
   const progress = useSeriesProgress(t.id);
   const seasons = t.seasons!;
@@ -166,7 +167,7 @@ function SeriesEpisodes({ t }: { t: TitleDetails }) {
         <h2 className={styles.h2}>Episódios</h2>
         <SeasonSelect seasons={seasons} value={season} onChange={setSeason} />
       </div>
-      <EpisodeList tvId={t.id} season={season} onPick={(s, e) => navigate(episodeHref(t.id, s, e))} />
+      <EpisodeList tvId={t.id} season={season} onPick={(s, e) => navigate(hrefs.episode(t.id, s, e))} />
     </section>
   );
 }

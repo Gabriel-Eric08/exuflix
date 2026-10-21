@@ -38,3 +38,29 @@ export function Splash() {
     </div>
   );
 }
+
+/** Wordmark da área IPTV: "MARCONDES" + "de Oxóssi" em verde. */
+export function XtWordmark({ className = "" }: { className?: string }) {
+  return (
+    <span className={`${styles.wordmark} ${styles.xt} ${className}`} aria-label="Marcondes de Oxóssi">
+      <span aria-hidden>
+        MARCONDES <span className={styles.xtSub}>de Oxóssi</span>
+      </span>
+    </span>
+  );
+}
+
+/** Ofá (arco e flecha de Oxóssi). */
+export function XtSymbol({ size = 32, plate = true }: { size?: number; plate?: boolean }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 64 64" aria-hidden>
+      {plate && <rect width="64" height="64" rx="14" fill="#0B0A0A" />}
+      <g fill="none" stroke="var(--oxossi-400)" strokeWidth="5" strokeLinecap="round">
+        <path d="M18 14c22 4 32 14 36 36" />
+        <path d="M18 14 54 50" strokeWidth="2.5" />
+      </g>
+      <path d="M12 52 44 20" stroke="var(--gold-400)" strokeWidth="4" strokeLinecap="round" />
+      <path d="M44 20h-9m9 0v9" stroke="var(--gold-400)" strokeWidth="4" strokeLinecap="round" fill="none" />
+    </svg>
+  );
+}

@@ -1,7 +1,7 @@
 import { Play, RotateCcw } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import type { MediaType, Season } from "../api/types";
-import { episodeHref, watchHref } from "../app/routes";
+import { useHrefs } from "../catalog/CatalogContext";
 import { useHasSource } from "../player/sources";
 import { nextEpisode } from "../player/nextEpisode";
 import { useMovieProgress, useSeriesProgress } from "../storage/progress";
@@ -18,6 +18,7 @@ interface Props {
 
 /** Rótulo e destino do botão principal conforme o estado salvo (seção 6.6). */
 export function usePrimaryAction(type: MediaType, id: number, seasons?: Season[]) {
+  const { watch: watchHref, episode: episodeHref } = useHrefs();
   const movie = useMovieProgress(type === "movie" ? id : -1);
   const series = useSeriesProgress(type === "tv" ? id : -1);
 

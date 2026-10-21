@@ -8,6 +8,7 @@ import { useDocumentTitle } from "../hooks/useDocumentTitle";
 import { useRecentSearches } from "../storage/searches";
 import { InfiniteGrid } from "../components/InfiniteGrid";
 import { TitleCard } from "../components/TitleCard";
+import { useHrefs } from "../catalog/CatalogContext";
 import styles from "./Search.module.css";
 
 type Filter = "all" | MediaType;
@@ -63,7 +64,8 @@ export default function Search() {
 }
 
 /** No mobile a navbar não tem campo: a página traz o próprio. */
-function MobileSearchField({ initial }: { initial: string }) {
+export function MobileSearchField({ initial, placeholder = "Títulos, gente, gêneros" }: { initial: string; placeholder?: string }) {
+  const searchPath = `${useHrefs().base}/busca`;
   const navigate = useNavigate();
   const [value, setValue] = useState(initial);
   const ref = useRef<HTMLInputElement>(null);
@@ -75,7 +77,7 @@ function MobileSearchField({ initial }: { initial: string }) {
   useEffect(() => {
     const t = value.trim();
     if (t === initial) return;
-    const id = setTimeout(() => navigate(t ? `/busca?q=${encodeURIComponent(t)}` : "/busca", { replace: true }), 300);
+    const id = setTimeout(() => navigate(t ? `${searchPath}?q=${encodeURIComponent(t)}` : searchPath, { replace: true }), 300);
     return () => clearTimeout(id);
   }, [value]); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -87,7 +89,7 @@ function MobileSearchField({ initial }: { initial: string }) {
         type="search"
         value={value}
         onChange={e => setValue(e.target.value)}
-        placeholder="Títulos, gente, gêneros"
+        placeholder={placeholder}
         aria-label="Buscar títulos"
       />
       {value && (
@@ -99,30 +101,36 @@ function MobileSearchField({ initial }: { initial: string }) {
   );
 }
 
+export function RecentSearches({ recent }: { recent: ReturnType<typeof useRecentSearches> }) {
+  const searchPath = `${useHrefs().base}/busca`;
+  if (recent.list.length === 0) return null;
+  return (
+    <section className={styles.section}>
+      <div className={styles.sectionHead}>
+        <h2>Buscas recentes</h2>
+        <button className={styles.clearAll} onClick={recent.clear}>Limpar</button>
+      </div>
+      <ul className={styles.recent}>
+        {recent.list.map(term => (
+          <li key={term}>
+            <Link to={`${searchPath}?q=${encodeURIComponent(term)}`} className={styles.recentItem}>
+              <Clock size={16} aria-hidden /> {term}
+            </Link>
+            <button aria-label={`Remover “${term}”`} onClick={() => recent.remove(term)} className={styles.remove}>
+              <X size={16} />
+            </button>
+          </li>
+        ))}
+      </ul>
+    </section>
+  );
+}
+
 function Suggestions({ recent }: { recent: ReturnType<typeof useRecentSearches> }) {
   const trending = useRow(["trending", "all", "day"], () => api.trending("all", "day"));
   return (
     <>
-      {recent.list.length > 0 && (
-        <section className={styles.section}>
-          <div className={styles.sectionHead}>
-            <h2>Buscas recentes</h2>
-            <button className={styles.clearAll} onClick={recent.clear}>Limpar</button>
-          </div>
-          <ul className={styles.recent}>
-            {recent.list.map(term => (
-              <li key={term}>
-                <Link to={`/busca?q=${encodeURIComponent(term)}`} className={styles.recentItem}>
-                  <Clock size={16} aria-hidden /> {term}
-                </Link>
-                <button aria-label={`Remover “${term}”`} onClick={() => recent.remove(term)} className={styles.remove}>
-                  <X size={16} />
-                </button>
-              </li>
-            ))}
-          </ul>
-        </section>
-      )}
+      <RecentSearches recent={recent} />
       <section className={styles.section}>
         <div className={styles.sectionHead}>
           <h2>Em alta</h2>

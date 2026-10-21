@@ -8,7 +8,9 @@ import { TmdbLogo } from "../components/Footer";
 import { toast } from "../components/Toast";
 import styles from "./About.module.css";
 
-const HISTORY_KEYS = ["progress", "hidden", "searches"];
+const HISTORY_KEYS = ["progress", "hidden", "searches", "xt:progress", "xt:hidden", "xt:searches"];
+// A conta IPTV (com senha) nunca vai para o arquivo de backup
+const PRIVATE_KEYS = new Set(["xtream:account"]);
 
 export default function About() {
   useDocumentTitle("Sobre e configurações");
@@ -17,7 +19,7 @@ export default function About() {
 
   const exportData = () => {
     const data: Record<string, unknown> = {};
-    for (const k of allKeys()) data[`exuflix:v1:${k}`] = read(k, null);
+    for (const k of allKeys()) if (!PRIVATE_KEYS.has(k)) data[`exuflix:v1:${k}`] = read(k, null);
     const blob = new Blob([JSON.stringify({ exportedAt: new Date().toISOString(), data }, null, 2)], { type: "application/json" });
     const a = document.createElement("a");
     a.href = URL.createObjectURL(blob);
@@ -29,7 +31,7 @@ export default function About() {
   const importData = async (file: File) => {
     try {
       const json = JSON.parse(await file.text());
-      const entries = Object.entries((json?.data ?? {}) as Record<string, unknown>).filter(([k]) => k.startsWith("exuflix:v1:"));
+      const entries = Object.entries((json?.data ?? {}) as Record<string, unknown>).filter(([k]) => k.startsWith("exuflix:v1:") && !PRIVATE_KEYS.has(k.slice("exuflix:v1:".length)));
       if (entries.length === 0) throw new Error("vazio");
       for (const [k, v] of entries) write(k.slice("exuflix:v1:".length), v);
       toast("Dados importados");

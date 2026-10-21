@@ -78,7 +78,8 @@ export function applyProgress(store: ProgressStore, t: Target, pos: number, dur:
 }
 
 /** Salva o progresso: a cada 5 s, ao pausar/pular/terminar, ao esconder a aba e ao sair do player. */
-export function useProgressTracker(target: Target) {
+/** `ns`: prefixo do storage do catálogo ("" no Exuflix, "xt:" no Marcondes de Oxóssi). */
+export function useProgressTracker(target: Target, ns = "") {
   const last = useRef({ pos: 0, dur: 0, savedAt: 0 });
   const targetRef = useRef(target);
   targetRef.current = target;
@@ -90,11 +91,11 @@ export function useProgressTracker(target: Target) {
     if (!force && Date.now() - last.current.savedAt < SAVE_EVERY_MS) return;
     last.current.savedAt = Date.now();
 
-    update<ProgressStore>("progress", EMPTY_PROGRESS, store => applyProgress(store, t, pos, dur, ended, Date.now()));
+    update<ProgressStore>(ns + "progress", EMPTY_PROGRESS, store => applyProgress(store, t, pos, dur, ended, Date.now()));
     // Voltou a assistir: o título sai da lista de removidos de "Continuar assistindo"
     const key = `${t.kind === "movie" ? "movie" : "tv"}:${t.id}`;
-    update<string[]>("hidden", [], h => (h.includes(key) ? h.filter(k => k !== key) : h));
-  }, []);
+    update<string[]>(ns + "hidden", [], h => (h.includes(key) ? h.filter(k => k !== key) : h));
+  }, [ns]);
 
   useEffect(() => {
     const flush = () => save(true);

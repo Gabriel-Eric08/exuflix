@@ -96,7 +96,7 @@ function Slide({ item, active, first, onPreview }: { item: TitleSummary; active:
   return (
     <div ref={ref} className={`${styles.slide} ${active ? styles.active : ""}`} aria-hidden={!active}>
       <picture className={styles.media}>
-        <source media="(max-width: 767px)" srcSet={posterSrcSet(item.poster)} sizes="100vw" />
+        {item.poster && <source media="(max-width: 767px)" srcSet={posterSrcSet(item.poster) ?? img(item.poster)!} sizes="100vw" />}
         <img
           src={img(item.backdrop, "w1280")!}
           srcSet={backdropSrcSet(item.backdrop)}

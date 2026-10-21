@@ -68,7 +68,7 @@ export function allKeys(): string[] {
 
 function pruneAndRetry(key: string, value: unknown) {
   // Remove os itens de progresso mais antigos e tenta de novo
-  if (key === "progress") {
+  if (key.endsWith("progress")) {
     const store = value as { items: Record<string, { updatedAt: number }> };
     const entries = Object.entries(store.items).sort((a, b) => b[1].updatedAt - a[1].updatedAt);
     store.items = Object.fromEntries(entries.slice(0, Math.floor(entries.length * 0.7)));

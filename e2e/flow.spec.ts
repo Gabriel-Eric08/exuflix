@@ -1,8 +1,10 @@
 import { expect, test } from "@playwright/test";
 import { mockTmdb } from "./tmdb-mock";
+import { skipXtreamPrompt } from "./xtream-mock";
 
 test.beforeEach(async ({ page }) => {
   await mockTmdb(page);
+  await skipXtreamPrompt(page);
 });
 
 test("home mostra destaque e linhas sem erros", async ({ page }) => {

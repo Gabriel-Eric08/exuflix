@@ -821,3 +821,89 @@
   line-height: 1.5;
 }
 
+
+/* ---------- TV ao vivo e fallback de stream (Marcondes de Oxóssi) ---------- */
+
+.liveBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: var(--fs-xs);
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.liveBadge::before {
+  content: "";
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--exu-red-500);
+  box-shadow: 0 0 0 4px rgba(227, 38, 43, 0.25);
+  animation: livePulse 1.6s ease-in-out infinite;
+}
+@keyframes livePulse {
+  50% { opacity: 0.4; }
+}
+
+.error > .fallback,
+.fallback {
+  display: grid;
+  gap: var(--space-3);
+  justify-items: center;
+  max-width: 520px;
+  font-size: var(--fs-sm);
+  font-weight: 500;
+  color: var(--text-2);
+}
+.fallback .fallbackActions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-2);
+}
+.fallbackPage {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: var(--space-5);
+  padding: var(--gutter);
+  text-align: center;
+  background: #000;
+}
+.fallbackPage h1 {
+  font-size: var(--fs-xl);
+}
+.fallbackBg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.18;
+  filter: blur(6px);
+}
+.fallbackPage > :not(img) {
+  position: relative;
+}
+
+.channelInfo {
+  display: grid;
+  gap: 2px;
+  font-size: var(--fs-sm);
+  font-weight: 500;
+  color: var(--text-2);
+}
+.channelInfo strong {
+  color: var(--text-1);
+}
+.channelLogo {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+  border-radius: var(--radius-sm);
+  background: rgba(255, 255, 255, 0.06);
+  flex: none;
+}

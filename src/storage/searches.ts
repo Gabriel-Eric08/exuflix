@@ -1,10 +1,11 @@
+import { useCatalog } from "../catalog/CatalogContext";
 import { useStored } from "./useStored";
 
 const EMPTY: string[] = [];
 const MAX = 8;
 
 export function useRecentSearches() {
-  const [list, setList] = useStored<string[]>("searches", EMPTY);
+  const [list, setList] = useStored<string[]>(useCatalog().ns + "searches", EMPTY);
   const add = (term: string) => {
     const t = term.trim();
     if (t.length < 2) return;

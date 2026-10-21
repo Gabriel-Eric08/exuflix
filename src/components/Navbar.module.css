@@ -108,12 +108,62 @@
   color: var(--text-2);
 }
 
+
+/* ---------- Troca Exuflix ↔ Marcondes de Oxóssi ---------- */
+
+.switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: var(--space-2);
+  padding: 4px 12px 4px 8px !important;
+  border-radius: var(--radius-pill);
+  box-shadow: inset 0 0 0 1px var(--border);
+  color: var(--text-1);
+  font-weight: 700;
+  white-space: nowrap;
+  transition: box-shadow var(--dur-1), background-color var(--dur-1), color var(--dur-1);
+}
+.switch:hover {
+  box-shadow: inset 0 0 0 1px var(--oxossi-400);
+}
+.xt .switch:hover {
+  box-shadow: inset 0 0 0 1px var(--exu-red-500);
+}
+
+.locked {
+  color: var(--text-3) !important;
+  filter: grayscale(1);
+  opacity: 0.6;
+}
+.locked:hover {
+  opacity: 0.85;
+}
+
+.account {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  flex: none;
+  border-radius: 50%;
+  color: var(--text-2);
+}
+.account:hover {
+  color: var(--text-1);
+}
+
+.xt .links .active::after {
+  background: var(--oxossi-400);
+}
+
 .tabbar {
   display: none;
 }
 
 @media (max-width: 1023px) {
   .links { gap: var(--space-4); }
+  .switch { margin-left: 0; }
   .searchOpen .input { width: 160px; }
 }
 
@@ -138,7 +188,8 @@
     border-top: 1px solid var(--border);
   }
 
-  .tabbar a {
+  .tabbar a,
+  .tabbar button {
     flex: 1;
     display: flex;
     flex-direction: column;
@@ -148,6 +199,10 @@
     font-size: 11px;
     font-weight: 600;
     color: var(--text-3);
+  }
+
+  .xt ~ .tabbar .tabActive {
+    color: var(--oxossi-400);
   }
 
   .tabbar .tabActive {
